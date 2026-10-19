@@ -25,7 +25,6 @@ PamsBeyond is featured on Product Hunt. If the platform helps you plan your next
 | **💼 Workspace & Utilities** | Track packing progress, save trip notes, export JSON backups, and restore a previous planning session. |
 | **📄 Portfolio Engine** | Generate a downloadable PDF travel portfolio containing routes, budgets, checklists, and trip notes. |
 | **🔗 Affiliate Travel Partners** | Access helpful partner services for flights, disruption support, hotels, tours, activities, airport transfers, and local rides. |
-| **🤖 Algorithmic Tip Generator** | Generate destination-, budget-, and travel-style-specific tips locally without API keys or external network calls. |
 
 ## 🚀 Streamlit Community Cloud Deployment
 
@@ -50,6 +49,7 @@ streamlit run app.py
 - **Interactive data visualizations:** [Plotly Express](https://plotly.com/python/plotly-express/)
 - **PDF document generation:** [ReportLab](https://www.reportlab.com)
 - **Data portability:** Structured JSON serialization for plan backup and restore
+- **Runtime hardening:** Embedded page lookups tolerate Streamlit-rendered planner fields that live outside the HTML component.
 - **Travel integrations:** Affiliate travel services and local assistance links
 
 ## 🤝 Human Support

@@ -4,7 +4,7 @@ import random
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
 
 import base64
 import os
@@ -827,6 +827,7 @@ html_code = """
             // Populate Countries
             ['visaOrigin', 'visaDest', 'plannerOrigin', 'plannerDestination'].forEach(id => {
                 const el = document.getElementById(id);
+                if (!el) return;
                 globalCountries.forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c; opt.textContent = c;
@@ -837,6 +838,7 @@ html_code = """
             // Populate Cities
             ['flightOriginCity', 'flightDestCity', 'hotelLocation'].forEach(id => {
                 const el = document.getElementById(id);
+                if (!el) return;
                 globalCities.forEach(city => {
                     const opt = document.createElement('option');
                     opt.value = city; opt.textContent = city;
@@ -855,9 +857,12 @@ html_code = """
 
         function switchTab(tabId) {
             ['home', 'planner', 'visa', 'flights', 'hotels', 'help', 'privacy', 'terms'].forEach(id => {
-                document.getElementById('view-' + id).classList.add('hidden');
+                const view = document.getElementById('view-' + id);
+                if (view) view.classList.add('hidden');
             });
-            document.getElementById('view-' + tabId).classList.remove('hidden');
+            const activeView = document.getElementById('view-' + tabId);
+            if (!activeView) return;
+            activeView.classList.remove('hidden');
 
             if(tabId === 'help' && leafletMap) {
                 setTimeout(() => leafletMap.invalidateSize(), 300);
@@ -1514,80 +1519,6 @@ with planner_tab3:
 
     st.download_button("📄 Download full travel portfolio PDF", data=generate_trip_pdf(), file_name="PamsBeyond_Travel_Portfolio.pdf", mime="application/pdf", use_container_width=True)
 
-
-# -----------------------------------------------------------------------------
-# Offline algorithmic travel intelligence
-# -----------------------------------------------------------------------------
-def generate_travel_tips(destination, budget_tier, travel_style):
-    """Generate contextual travel tips locally without external API calls."""
-    style_hacks = {
-        "Solo / Backpacker": [
-            "Use hostel common areas or local walking tours to meet fellow travelers early.",
-            "Keep digital passport scans in an offline folder and carry an emergency backup card.",
-            "Choose public transit or shared shuttles over private terminal taxis when practical.",
-        ],
-        "Family": [
-            "Build a buffer afternoon into your itinerary every few days to avoid travel fatigue.",
-            "Pre-book airport transfers to reduce waiting with luggage and children.",
-            "Verify kid-friendly amenities and kitchen access before confirming accommodation.",
-        ],
-        "Luxury / Leisure": [
-            "Ask your accommodation concierge about curated neighborhood experiences before arrival.",
-            "Consider airport lounge access to make long transit days more comfortable.",
-            "Reserve popular dining and premium experiences several weeks ahead when possible.",
-        ],
-    }
-    budget_hacks = {
-        "Budget-Conscious": [
-            "Use local supermarkets or market stalls for breakfast and lunch so you can save for experiences.",
-            "Look for tourism passes that bundle public transit with museum admissions.",
-            "Start with a free walking tour to understand the city before spending on activities.",
-        ],
-        "Moderate / Balanced": [
-            "Mix casual lunches with a few planned sit-down dinners to balance cost and experience.",
-            "Prioritize accommodation location over premium views to reduce daily transit time.",
-            "Set aside a fixed emergency buffer for unexpected transport or booking changes.",
-        ],
-        "Premium / High-End": [
-            "Use private express transfers between multi-city hubs to maximize exploration time.",
-            "Review travel protections included with premium payment cards before departure.",
-            "Choose curated small-group tours when you want more access and fewer crowds.",
-        ],
-    }
-    destination_tips = [
-        f"Download offline maps for {destination} before your flight lands.",
-        f"Research the ride-hailing app most trusted in {destination} before you need a car.",
-        f"Check tipping etiquette and cash preferences for small vendors in {destination}.",
-    ]
-    return [
-        random.choice(style_hacks.get(travel_style, style_hacks["Solo / Backpacker"])),
-        random.choice(budget_hacks.get(budget_tier, budget_hacks["Budget-Conscious"])),
-        random.choice(destination_tips),
-    ]
-
-st.markdown("---")
-st.title("🤖 Algorithmic Travel Tip Generator")
-st.caption("Generate practical, contextual travel strategies locally — no API keys or external networks required.")
-with st.form("tip_generator_form"):
-    tip_col1, tip_col2, tip_col3 = st.columns(3)
-    with tip_col1:
-        destination_input = st.text_input("Where are you traveling?", placeholder="e.g., Paris or Tokyo")
-    with tip_col2:
-        budget_input = st.selectbox("Budget tier", ["Budget-Conscious", "Moderate / Balanced", "Premium / High-End"])
-    with tip_col3:
-        style_input = st.selectbox("Travel style", ["Solo / Backpacker", "Family", "Luxury / Leisure"])
-    submit_tips = st.form_submit_button("Generate blueprint tips")
-
-if submit_tips:
-    if not destination_input.strip():
-        st.warning("Please enter a destination to personalize your tips.")
-    else:
-        tips = generate_travel_tips(destination_input.strip(), budget_input, style_input)
-        st.success(f"Custom travel intelligence for {destination_input.strip()}")
-        tip_cards = st.columns(3)
-        for idx, tip in enumerate(tips):
-            with tip_cards[idx]:
-                st.info(f"**Tip {idx + 1}**\n\n{tip}")
 
 with st.sidebar:
     st.divider()
