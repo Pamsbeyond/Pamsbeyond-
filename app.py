@@ -1529,3 +1529,31 @@ with st.sidebar:
         if st.form_submit_button("Submit review"):
             st.session_state.planner_feedback.append({"rating": rating, "feedback": feedback.strip() or "No written feedback."})
             st.success("Thanks for helping us improve.")
+
+# --- B2B SAAS WHITE-LABEL VALIDATION PANEL ---
+with st.sidebar:
+    st.divider()
+    st.write("💼 **PamsBeyond for Business**")
+    st.caption(
+        "Are you an independent travel agent, tour operator, or retreat organizer? "
+        "Stop manually formatting trip spreadsheets for your clients."
+    )
+
+    with st.expander("✨ Build Custom Portfolios"):
+        st.markdown(
+            "We are building a **White-Label Premium SaaS version** of PamsBeyond! "
+            "You will be able to:\n"
+            "* 🚫 Remove all PamsBeyond branding\n"
+            "* 🖼️ Upload your own custom agency logo\n"
+            "* 🎨 Customize UI colors to match your brand\n"
+            "* 📄 Instantly generate custom PDF itineraries for your clients"
+        )
+
+        business_form_url = "https://forms.gle/edZnKkHYAiWi9QxG7"
+        st.markdown(
+            f'<a href="{business_form_url}" target="_blank" rel="noopener noreferrer">'
+            f'<button style="width:100%; background-color:#4A90E2; color:white; border:none; '
+            f'padding:10px; border-radius:5px; cursor:pointer; font-weight:bold;">'
+            f'🚀 Join Private Agency Beta</button></a>',
+            unsafe_allow_html=True,
+        )
