@@ -41,6 +41,13 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## 💼 SaaS and Support Links
+
+- **SaaS Premium / Private Agency Beta:** https://forms.gle/edZnKkHYAiWi9QxG7
+- **Buy Me a Coffee:** https://buymeacoffee.com/Pamsbeyond
+
+The app includes these links in both the business sidebar panel and the visible main-page business section.
+
 ## 🛂 Visa Requirements Hub
 
 The app includes a local visa lookup section that reads `passport-index-tidy.csv` from the same folder as `app.py`. To enable the lookup, add a dataset with these columns:

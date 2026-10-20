@@ -27,6 +27,25 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Monetization and support links
+BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/Pamsbeyond"
+SAAS_PREMIUM_URL = "https://forms.gle/edZnKkHYAiWi9QxG7"
+
+# Show a thank-you message when a supporter returns with ?status=success.
+if st.query_params.get("status") == "success":
+    st.balloons()
+    st.markdown(
+        """
+        <div style="background:linear-gradient(135deg,#1D976C 0%,#93F9B9 100%);padding:20px;border-radius:12px;color:white;text-align:center;margin-bottom:25px;font-family:Arial,sans-serif;">
+            <h2 style="margin:0 0 10px;color:white;">✨ You Are Amazing! ✨</h2>
+            <p style="margin:0;font-size:16px;font-weight:500;">Thank you for supporting <b>PamsBeyond</b>. 🌍✈️<br>Your contribution helps keep the travel tools available.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if st.button("Dismiss Alert ✖️", key="dismiss_support_alert"):
+        st.query_params.clear()
+
 # Custom CSS to hide Streamlit header and padding for full-screen feel
 st.markdown('<meta name="google-site-verification" content="J6rOwP_5k6lkMPyWC4DVqG2TztlklkLQ9Az8qZSSP-A" />', unsafe_allow_html=True)
 
@@ -1610,17 +1629,15 @@ with st.sidebar:
             "* 📄 Instantly generate custom PDF itineraries for your clients"
         )
 
-        business_form_url = "https://forms.gle/edZnKkHYAiWi9QxG7"
-        st.markdown(
-            f'<a href="{business_form_url}" target="_blank" rel="noopener noreferrer">'
-            f'<button style="width:100%; background-color:#4A90E2; color:white; border:none; '
-            f'padding:10px; border-radius:5px; cursor:pointer; font-weight:bold;">'
-            f'🚀 Join Private Agency Beta</button></a>',
-            unsafe_allow_html=True,
-        )
+        st.link_button("⭐ Upgrade to SaaS Premium", SAAS_PREMIUM_URL, use_container_width=True)
+        st.link_button("☕ Buy Me a Coffee", BUY_ME_A_COFFEE_URL, use_container_width=True)
 
 # Visible fallback for mobile layouts where the Streamlit sidebar is collapsed.
 st.markdown("---")
 st.subheader("💼 PamsBeyond for Business")
 st.write("Are you a travel agent, tour operator, or retreat organizer? Build branded client portfolios faster.")
-st.link_button("🚀 Join Private Agency Beta", "https://forms.gle/edZnKkHYAiWi9QxG7", use_container_width=True)
+cta_saas, cta_coffee = st.columns(2)
+with cta_saas:
+    st.link_button("⭐ Upgrade to SaaS Premium", SAAS_PREMIUM_URL, use_container_width=True)
+with cta_coffee:
+    st.link_button("☕ Buy Me a Coffee", BUY_ME_A_COFFEE_URL, use_container_width=True)
