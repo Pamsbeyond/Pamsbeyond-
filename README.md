@@ -41,6 +41,16 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## 🛂 Visa Requirements Hub
+
+The app includes a local visa lookup section that reads `passport-index-tidy.csv` from the same folder as `app.py`. To enable the lookup, add a dataset with these columns:
+
+```text
+Passport,Destination,Requirement
+```
+
+The lookup supports statuses such as `visa free`, `e-visa`, `visa on arrival`, `VOA`, `ETA`, and `visa required`. Always confirm current rules with official embassy or immigration sources before traveling.
+
 ## 🛠️ Tech Stack & Architecture
 
 - **Application framework:** [Streamlit](https://streamlit.io)

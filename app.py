@@ -1347,6 +1347,67 @@ with st.sidebar:
 components.html(html_code.replace("{{LOGO_DATA}}", logo_data), height=950, scrolling=True)
 
 # -----------------------------------------------------------------------------
+# Global Visa Requirements Hub
+# -----------------------------------------------------------------------------
+st.markdown("---")
+st.title("🛂 PamsBeyond Global Visa Assistant")
+st.write("Check passport and destination requirements from the local global visa dataset.")
+
+@st.cache_data
+def load_global_visa_data():
+    visa_path = Path(__file__).with_name("passport-index-tidy.csv")
+    if not visa_path.exists():
+        return None
+    data = pd.read_csv(visa_path)
+    data.columns = data.columns.str.strip()
+    required_columns = {"Passport", "Destination", "Requirement"}
+    if not required_columns.issubset(data.columns):
+        missing = ", ".join(sorted(required_columns - set(data.columns)))
+        st.error(f"The visa dataset is missing required columns: {missing}.")
+        return None
+    return data
+
+visa_df = load_global_visa_data()
+if visa_df is None:
+    st.info("Add `passport-index-tidy.csv` beside `app.py` to enable the 199-country visa lookup.")
+else:
+    passport_list = sorted(visa_df["Passport"].dropna().astype(str).unique())
+    if not passport_list:
+        st.warning("The visa dataset does not contain any passport records yet.")
+    else:
+        visa_col1, visa_col2 = st.columns(2)
+        with visa_col1:
+            passport = st.selectbox("Select your passport (citizenship)", passport_list, key="visa_hub_passport")
+        filtered_visa_df = visa_df[visa_df["Passport"].astype(str) == passport]
+        destination_list = sorted(filtered_visa_df["Destination"].dropna().astype(str).unique())
+        with visa_col2:
+            destination = st.selectbox("Select travel destination", destination_list, key="visa_hub_destination")
+
+        if st.button("Check rules & restrictions 🔍", key="visa_hub_check"):
+            match_row = filtered_visa_df[filtered_visa_df["Destination"].astype(str) == destination]
+            if match_row.empty:
+                st.error("No record found for this passport and destination combination.")
+            else:
+                requirement = str(match_row["Requirement"].iloc[0]).strip()
+                normalized_requirement = requirement.lower()
+                if normalized_requirement in {"visa free", "visa-free"}:
+                    st.success(f"### 😎 Visa status: {requirement.title()}")
+                    st.info("💡 Safe travels! You may not need a formal visa beforehand. Check maximum stay limits and current official entry rules.")
+                elif normalized_requirement in {"e-visa", "visa on arrival", "voa", "eta"}:
+                    st.warning(f"### ⚠️ Visa status: {requirement.title()}")
+                    st.write("🎉 **Great news!** Review your documentation requirements online or before arrival.")
+                    st.markdown("### 📑 Speed up your application with premium support")
+                    st.write("Get a customized document-validation toolkit for your travel application.")
+                    col_saas, col_info = st.columns(2)
+                    with col_saas:
+                        st.link_button("⭐ Unlock Priority Guides", "https://forms.gle/edZnKkHYAiWi9QxG7", use_container_width=True)
+                    with col_info:
+                        st.caption("Always confirm current requirements with the destination's official embassy, consulate, or immigration authority.")
+                else:
+                    st.error(f"### 🛑 Visa status: {requirement.title()}")
+                    st.info("📋 **Action required:** Coordinate with the destination's official embassy or consulate before booking your departure.")
+
+# -----------------------------------------------------------------------------
 # Native Trip Planner workspace
 # -----------------------------------------------------------------------------
 st.markdown("---")
