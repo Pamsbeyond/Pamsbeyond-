@@ -24,7 +24,7 @@ st.set_page_config(
     page_title="PamsBeyond - Visa & Travel Global Services",
     page_icon="✈️",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # Custom CSS to hide Streamlit header and padding for full-screen feel
@@ -1557,3 +1557,9 @@ with st.sidebar:
             f'🚀 Join Private Agency Beta</button></a>',
             unsafe_allow_html=True,
         )
+
+# Visible fallback for mobile layouts where the Streamlit sidebar is collapsed.
+st.markdown("---")
+st.subheader("💼 PamsBeyond for Business")
+st.write("Are you a travel agent, tour operator, or retreat organizer? Build branded client portfolios faster.")
+st.link_button("🚀 Join Private Agency Beta", "https://forms.gle/edZnKkHYAiWi9QxG7", use_container_width=True)
