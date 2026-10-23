@@ -29,7 +29,7 @@ st.set_page_config(
 
 # Monetization and support links
 BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/Pamsbeyond"
-SAAS_PREMIUM_URL = "https://forms.gle/edZnKkHYAiWi9QxG7"
+SAAS_PREMIUM_URL = "https://tally.so/r/dbWpjo"
 
 # Show a thank-you message when a supporter returns with ?status=success.
 if st.query_params.get("status") == "success":
@@ -1419,7 +1419,7 @@ else:
                     st.write("Get a customized document-validation toolkit for your travel application.")
                     col_saas, col_info = st.columns(2)
                     with col_saas:
-                        st.link_button("⭐ Unlock Priority Guides", "https://forms.gle/edZnKkHYAiWi9QxG7", use_container_width=True)
+                        st.link_button("⭐ Apply for Premium Support", SAAS_PREMIUM_URL, use_container_width=True)
                     with col_info:
                         st.caption("Always confirm current requirements with the destination's official embassy, consulate, or immigration authority.")
                 else:
@@ -1641,3 +1641,33 @@ with cta_saas:
     st.link_button("⭐ Upgrade to SaaS Premium", SAAS_PREMIUM_URL, use_container_width=True)
 with cta_coffee:
     st.link_button("☕ Buy Me a Coffee", BUY_ME_A_COFFEE_URL, use_container_width=True)
+
+# --- Premium B2B agency beta access ---
+PREMIUM_CODES = {
+    "PAMS-AGENT-01", "PAMS-AGENT-02", "PAMS-AGENT-03", "PAMS-AGENT-04", "PAMS-AGENT-05",
+    "PAMS-AGENT-06", "PAMS-AGENT-07", "PAMS-AGENT-08", "PAMS-AGENT-09", "PAMS-AGENT-10",
+    "PAMS-AGENT-11", "PAMS-AGENT-12", "PAMS-AGENT-13", "PAMS-AGENT-14", "PAMS-AGENT-15",
+    "PAMS-AGENT-16", "PAMS-AGENT-17", "PAMS-AGENT-18", "PAMS-AGENT-19", "PAMS-AGENT-20",
+}
+
+with st.sidebar:
+    st.divider()
+    st.title("💼 PamsBeyond for Business")
+    st.write("Are you an independent travel agent, tour operator, or retreat organizer?")
+    st.link_button("🚀 Apply for Private Beta (Free Key)", SAAS_PREMIUM_URL, use_container_width=True)
+    st.markdown("---")
+    st.subheader("🔑 Agent Login")
+    user_code = st.text_input("Enter your Premium Beta Code", type="password", key="premium_beta_code")
+
+if user_code:
+    if user_code.strip().upper() in PREMIUM_CODES:
+        st.success("Premium Features Unlocked!")
+        st.markdown("---")
+        st.title("💼 Branded Agency Dashboard")
+        st.write("Welcome to your premium white-label workspace.")
+        uploaded_logo = st.file_uploader("Upload your agency logo (PNG/JPG)", type=["png", "jpg", "jpeg"], key="agency_logo")
+        if uploaded_logo is not None:
+            st.image(uploaded_logo, caption="Your Agency Logo Active", width=150)
+        st.info("You can now prepare itineraries with your agency branding in the PDF exporter.")
+    else:
+        st.sidebar.error("Invalid code. Apply above to receive a free beta key.")
