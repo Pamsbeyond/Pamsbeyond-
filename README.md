@@ -43,7 +43,8 @@ streamlit run app.py
 
 ## 💼 SaaS and Support Links
 
-- **SaaS Premium / Private Agency Beta:** https://forms.gle/edZnKkHYAiWi9QxG7
+- **SaaS Premium / Private Agency Beta:**
+- (https://tally.so/r/dbWpjo)
 - **Buy Me a Coffee:** https://buymeacoffee.com/Pamsbeyond
 
 The app includes these links in both the business sidebar panel and the visible main-page business section.
